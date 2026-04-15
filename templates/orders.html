@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заказы - Домашняя пекарня</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f5f3e8 0%, #e8d9c5 100%);
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background: #8B4513;
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-links {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        .nav-links a:hover {
+            background: #A0522D;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .form-container, .orders-list {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: #8B4513;
+            margin-bottom: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background: #8B4513;
+            color: white;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .empty-message {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: #8B4513;
+            color: white;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="/">Главная</a>
+            <a href="/orders">Заказы</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="form-container">
+            <h2>Сделать заказ</h2>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="name">Ваше имя:</label>
+                    <input type="text" id="name" name="name" required placeholder="Введите ваше имя">
+                </div>
+                
+                <div class="form-group">
+                    <label for="product">Выберите продукт:</label>
+                    <select id="product" name="product" required>
+                        <option value="Хлеб">Хлеб - 100 ₽</option>
+                        <option value="Круассан">Круассан - 80 ₽</option>
+                        <option value="Пирожное">Пирожное - 150 ₽</option>
+                        <option value="Багет">Багет - 90 ₽</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="quantity">Количество:</label>
+                    <input type="number" id="quantity" name="quantity" required min="1" value="1">
+                </div>
+                
+                <button type="submit" class="btn" style="width: 100%;">Оформить заказ</button>
+            </form>
+        </div>
+        
+        <div class="orders-list">
+            <h2>Все заказы</h2>
+            {% if orders %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Имя клиента</th>
+                        <th>Продукт</th>
+                        <th>Количество</th>
+                        <th>Дата заказа</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        <td>{{ order.customer_name }}</td>
+                        <td>{{ order.product_name }}</td>
+                        <td>{{ order.quantity }}</td>
+                        <td>{{ order.date.strftime('%d.%m.%Y %H:%M') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-message">
+                <p>Пока нет заказов. Будьте первым!</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2024 Домашняя пекарня. Все права защищены.</p>
+    </footer>
+</body>
+</html>
